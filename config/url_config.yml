@@ -1,0 +1,20 @@
+# Sample configuration
+:jsonplaceholder:
+  :base: 'http://jsonplaceholder.typicode.com'
+  :v1:
+    :posts: '/posts/<sub>/<sub>'
+    :comments: '/comments'
+    :albums: '/albums'
+    :photos: '/photos'
+    :todos: '/todos'
+    :users: '/users'
+    
+#GET	/posts
+#GET	/posts/1
+#GET	/posts/1/comments
+#GET	/comments?postId=1
+#GET	/posts?userId=1
+#POST	/posts
+#PUT	/posts/1
+#PATCH	/posts/1
+#DELETE	/posts/1
