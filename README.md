@@ -1,10 +1,18 @@
-# Nap Time
+## Nap Time
 
 Nap Time is a generic REST API client.
 
-# Installation
+## Installation
 
-# Usage
+## Usage
 
-# Contact
+### As A Gem
+
+### With IRB
+
++ Start irb
++ load 'rest_client.rb'
++ t = RestClient.new
+
+## Contact
 + Andrew Fong

@@ -1,5 +1,6 @@
 require 'yaml'
 require 'httparty'
+require 'json'
 
 class RestClient
   attr_reader :config, :service, :base_url, :version, :endpoints
@@ -57,25 +58,63 @@ class RestClient
   def build_url(endpoint, subs=[], parameters={})
     url = base_url + endpoints[endpoint.to_sym]
     url = url_path_sub({url: url, sub: subs})
-    url = url_add_parameters(url, parameters) unless parameters.empty?
+    url = url_add_parameters(url, parameters) unless (parameters.nil? || parameters.empty?)
     url
   end
   
-  ### REST calls ###
-  def get(url)
+  # Load json file
+  # @param filename [String]
+  # @return [Hash]
+  def load_json(filename)
+    JSON.parse(File.read(filename))
+  end
+  
+  #==== REST calls ====#
+  
+  # Performs a get call
+  # @param args [Hash]
+  # @option args [Symbol] :endpoint - endpoint to connect to
+  # @option args [Array] :subs - array of values to substitute into <sub> value of url path
+  # @option args [Hash] :parameters - url parameters to add to the end of the url
+  def get(args)
+    url = build_url(args[:endpoint], args[:subs], args[:parameters])
     HTTParty.get(url)
   end
   
-  def post(url, query={}, headers={})
-    HTTParty.post(url, headers: headers, query: query)
+  # Performs a post call
+  # @param args [Hash]
+  # @option args [Symbol] :endpoint - endpoint to connect to
+  # @option args [Array] :subs - array of values to substitute into <sub> value of url path
+  # @option args [Hash] :parameters - url parameters to add to the end of the url
+  # @option args [Hash] :headers - hash of header values to add into request
+  # @option args [Hash] :query - hash of body values to add into request
+  def post(args)
+    url = build_url(args[:endpoint], args[:subs], args[:parameters])
+    HTTParty.post(url, headers: args[:headers], query: args[:query])
   end
   
-  def put(url, query={}, headers={})
-    HTTParty.put(url, headers: headers, query: query)
+  # Performs a put call
+  # @param args [Hash]
+  # @option args [Symbol] :endpoint - endpoint to connect to
+  # @option args [Array] :subs - array of values to substitute into <sub> value of url path
+  # @option args [Hash] :parameters - url parameters to add to the end of the url
+  # @option args [Hash] :headers - hash of header values to add into request
+  # @option args [Hash] :query - hash of body values to add into request
+  def put(args)
+    url = build_url(args[:endpoint], args[:subs], args[:parameters])
+    HTTParty.put(url, headers: args[:headers], query: args[:query])
   end
   
-  def delete(url, query={}, headers={})
-    HTTParty.delete(url, headers: headers, query: query)
+  # Performs a delete call
+  # @param args [Hash]
+  # @option args [Symbol] :endpoint - endpoint to connect to
+  # @option args [Array] :subs - array of values to substitute into <sub> value of url path
+  # @option args [Hash] :parameters - url parameters to add to the end of the url
+  # @option args [Hash] :headers - hash of header values to add into request
+  # @option args [Hash] :query - hash of body values to add into request
+  def delete(args)
+    url = build_url(args[:endpoint], args[:subs], args[:parameters])
+    HTTParty.delete(url, headers: args[:headers], query: args[:query])
   end
 
 end
