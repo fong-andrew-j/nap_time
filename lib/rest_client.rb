@@ -5,7 +5,7 @@ require 'json'
 class RestClient
   attr_reader :config, :service, :base_url, :version, :endpoints
   def initialize(args={})
-    @config = args[:config].nil? ? YAML.load_file('../config/url_config.yml') : YAML.load_file(args[:config])
+    @config = args[:config].nil? ? YAML.load_file(File.dirname(__FILE__) + '/../config/url_config.yml') : YAML.load_file(args[:config])
     @service = :jsonplaceholder #args[:service]
     @base_url = config[service][:base]
     @version = args[:version].nil? ? :v1 : args[:version]
@@ -13,6 +13,8 @@ class RestClient
   end
 
   # @param args [Hash]
+  # @option args [String] :url  url string to cleanup
+  # @option args [Array] :sub array containing strings to replace in the url string 
   # @return [String] url with <sub> replaced or removed
   def url_path_sub(args)
     url = args[:url]
@@ -45,7 +47,7 @@ class RestClient
   def url_add_parameters(url, parameters)
     url += '?'
     parameters.each do | k, v|
-      url += "#{k}=#{v}&"
+      url += "#{k.to_s}=#{v.to_s}&"
     end
     url.sub(/&$/, '') #remove trailing &
   end
