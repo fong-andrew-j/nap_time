@@ -4,21 +4,28 @@ require 'json'
 
 class RestClient
   attr_reader :config, :service, :base_url, :version, :endpoints
+  
+  # @param args [Hash]
+  # @option args [String] :config file name of yaml config file
+  # @option args [String] :service the string in the config file for the service
+  #   you want to connect to
+  # @option args [String] :version (:v1) API version of the service
+  #
   def initialize(args={})
     @config = args[:config].nil? ? YAML.load_file(File.dirname(__FILE__) + '/../config/url_config.yml') : YAML.load_file(args[:config])
-    @service = :jsonplaceholder #args[:service]
+    @service = args[:service].nil? ? :jsonplaceholder : args[:service]
     @base_url = config[service][:base]
     @version = args[:version].nil? ? :v1 : args[:version]
     @endpoints = config[service][version]
   end
 
   # @param args [Hash]
-  # @option args [String] :url  url string to cleanup
+  # @option args [String] :url url string to cleanup
   # @option args [Array] :sub array containing strings to replace in the url string 
   # @return [String] url with <sub> replaced or removed
   def url_path_sub(args)
     url = args[:url]
-    replace_subs(url, args[:sub]) unless (args[:sub].nil? || args[:sub].empty?)
+    replace_subs(url, args[:subs]) unless (args[:subs].nil? || args[:subs].empty?)
     clean_url_path(url)
   end
 
@@ -59,7 +66,7 @@ class RestClient
   # @return [String]
   def build_url(endpoint, subs=[], parameters={})
     url = base_url + endpoints[endpoint.to_sym]
-    url = url_path_sub({url: url, sub: subs})
+    url = url_path_sub({url: url, subs: subs})
     url = url_add_parameters(url, parameters) unless (parameters.nil? || parameters.empty?)
     url
   end

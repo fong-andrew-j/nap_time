@@ -7,12 +7,12 @@ describe RestClient do
   end
 
   it "should replace the <sub> values in the url" do
-     url = @rest_client.url_path_sub(url: 'http://jsonplaceholder.typicode.com/posts/<sub>/<sub>', sub: [1, 'comments'])
+     url = @rest_client.url_path_sub(url: 'http://jsonplaceholder.typicode.com/posts/<sub>/<sub>', subs: [1, 'comments'])
      expect(url).to eq('http://jsonplaceholder.typicode.com/posts/1/comments')
   end
   
   it "should clean up <sub> values in the url if substitution hash is empty" do
-    url = @rest_client.url_path_sub(url: 'http://jsonplaceholder.typicode.com/posts/<sub>/<sub>', sub: [])
+    url = @rest_client.url_path_sub(url: 'http://jsonplaceholder.typicode.com/posts/<sub>/<sub>', subs: [])
     expect(url).to eq('http://jsonplaceholder.typicode.com/posts')
   end
   

@@ -4,12 +4,6 @@ Nap Time is a generic REST API client.
 
 ## Installation
 
-## Usage
-
-### As A Gem
-
-### With IRB
-
 ## Configuration File Format
 
 The configuration file should be a .yml file. The yaml keys should be symbols.
@@ -34,9 +28,19 @@ strings will be removed.
         :todos: '/todos'
         :users: '/users'
 
+## Usage
+
+### As A Gem
+
+### With IRB
+
 + Start irb
-+ load 'rest_client.rb'
++ load 'lib/rest_client.rb'
 + t = RestClient.new
++ t.get(endpoint: :posts) # simple get off an endpoints
++ t.get(endpoint: :posts, subs: [1, 'comments']) # get with url substitutions
++ t.get(endpoint: :posts, parameters: {a: 1} # get with url parameters, results 
+                                             # in ?a=1 appended to url
 
 ## Contact
 + Andrew Fong (fong.andrew.j@gmail.com)
